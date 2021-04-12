@@ -109,7 +109,7 @@ def evaluate(model, iterator, criterion):
 				text, text_len = batch.text
 			else:
 				text = batch.text
-				
+
 			if text.shape[0] == 0:
 				continue
 
