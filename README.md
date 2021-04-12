@@ -12,7 +12,7 @@ git clone https://github.com/cestwc/unofficial-torchtext-oov-extension.git
 Then you can try this. A large portion of codes are from this [tutorial](https://github.com/bentrevett/pytorch-sentiment-analysis/blob/master/3%20-%20Faster%20Sentiment%20Analysis.ipynb), but there are still necessary changes.
 
 ```python
-from torchtext.legacy import data
+from torchtext.legacy import data, datasets
 
 from customized import ENGLISHTEXT
 from dLoss import FastText
@@ -34,7 +34,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 train_iterator, valid_iterator, test_iterator = data.BucketIterator.splits(
     (train_data, valid_data, test_data), 
     batch_size = BATCH_SIZE, 
-    sort_key = lambda x : len(x.tweets),
+    sort_key = lambda x : len(x.text),
     device = device)
 	
 INPUT_DIM = len(TEXT.vocab)
