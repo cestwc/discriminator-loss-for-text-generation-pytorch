@@ -19,12 +19,16 @@ from dLoss import FastText
 
 TEXT = ENGLISHTEXT(include_lengths = True, build_vocab = True)
 LABEL = data.LabelField(dtype = torch.float)
+```
 
+```python
 import random
 
 train_data, test_data = datasets.IMDB.splits(TEXT, LABEL)
 train_data, valid_data = train_data.split()
+```
 
+```python
 LABEL.build_vocab(train_data)
 
 BATCH_SIZE = 16
