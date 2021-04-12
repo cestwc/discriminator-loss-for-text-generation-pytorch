@@ -1,6 +1,25 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
+class DLoss(nn.Module):
+	
+	def __init__(self, vocab_size, embedding_dim, output_dim, pad_idx, directory):
+
+		super().__init__()
+		
+		self.model = FastText(vocab_size, embedding_dim, output_dim, pad_idx)
+		
+		self.model.load_state_dict(torch.load(directory))
+		
+	def forward(self, text):
+		
+		with torch.no_grad():
+		
+			predictions = self.model(text).squeeze(1)
+		
+		return torch.mean(torch.sigmoid(predictions))
+	
+
 class FastText(nn.Module):
 	def __init__(self, vocab_size, embedding_dim, output_dim, pad_idx):
 
@@ -27,5 +46,5 @@ class FastText(nn.Module):
 		pooled = F.avg_pool2d(embedded, (embedded.shape[1], 1)).squeeze(1) 
 
 		#pooled = [batch size, embedding_dim]
-
-		return torch.mean(torch.sigmoid(self.fc(pooled))) # different from the original model in this line
+		
+		return self.fc(pooled)
