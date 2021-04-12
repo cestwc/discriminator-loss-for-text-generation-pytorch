@@ -44,6 +44,13 @@ PAD_IDX = TEXT.vocab.stoi[TEXT.pad_token]
 
 model = FastText(INPUT_DIM, EMBEDDING_DIM, OUTPUT_DIM, PAD_IDX)
 
+pretrained_embeddings = TEXT.vocab.vectors
+model.embedding.weight.data.copy_(pretrained_embeddings)
+
+UNK_IDX = TEXT.vocab.stoi[TEXT.unk_token]
+model.embedding.weight.data[UNK_IDX] = torch.zeros(EMBEDDING_DIM)
+model.embedding.weight.data[PAD_IDX] = torch.zeros(EMBEDDING_DIM)
+
 import torch.optim as optim
 optimizer = optim.Adam(model.parameters())
 
