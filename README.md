@@ -172,3 +172,36 @@ test_loss, test_acc = evaluate(model, test_iterator, criterion)
 
 print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%')
 ```
+Then, you may consider use the pretrained model as a discriminator, and freeze it while generating some texts.
+```python
+from customized import ENGLISHTEXT
+from dLoss import DLoss
+
+SRC = ENGLISHTEXT(include_lengths = True, build_vocab = True)
+TRG = ENGLISHTEXT(include_lengths = True, build_vocab = True)
+```
+This customized field helps you maintain a consistency in vocabulary, and thus you may encounter fewer problems when applying the loss model.
+
+```python
+INPUT_DIM = len(TRG.vocab)
+EMBEDDING_DIM = 100
+OUTPUT_DIM = 1
+PAD_IDX = TRG.vocab.stoi[TRG.pad_token]
+
+dloss = DLoss(INPUT_DIM, EMBEDDING_DIM, OUTPUT_DIM, PAD_IDX, 'tut3-model.pt')
+```
+
+A better practice would be to freeze the loss model like this
+```python
+for name, param in dloss.named_parameters():                
+	param.requires_grad = False
+```
+
+Finally, you can call your loss model like this
+```python
+loss = dloss(your_output_text)
+loss.backward()
+```
+
+Again, try to use a proper ratio to balance this loss and the rest, to avoid vanishing gradients.
+```
