@@ -111,7 +111,7 @@ def evaluate(model, iterator, criterion):
 				text = batch.text
 				
 			if text.shape[0] == 0:
-                continue
+				continue
 
 			predictions = model(text).squeeze(1)
 
