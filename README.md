@@ -189,7 +189,7 @@ EMBEDDING_DIM = 100
 OUTPUT_DIM = 1
 PAD_IDX = TRG.vocab.stoi[TRG.pad_token]
 
-dloss = DLoss(INPUT_DIM, EMBEDDING_DIM, OUTPUT_DIM, PAD_IDX, 'tut3-model.pt')
+dloss = DLoss(INPUT_DIM, EMBEDDING_DIM, OUTPUT_DIM, PAD_IDX, 'tut3-model.pt').to(device)
 ```
 
 A better practice would be to freeze the loss model like this
