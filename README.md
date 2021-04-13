@@ -17,7 +17,7 @@ from torchtext.legacy import data, datasets
 from customized import ENGLISHTEXT
 from dLoss import FastText
 
-TEXT = ENGLISHTEXT(include_lengths = True, build_vocab = True)
+TEXT = ENGLISHTEXT(include_lengths = True, build_vocab = True) # its 'field name' is 'text'
 LABEL = data.LabelField(dtype = torch.float)
 ```
 
@@ -26,11 +26,12 @@ import random
 
 train_data, test_data = datasets.IMDB.splits(TEXT, LABEL)
 train_data, valid_data = train_data.split()
+
+LABEL.build_vocab(train_data)
 ```
+Always remember to build your lable 'vocab' according to how many classes you have.
 
 ```python
-LABEL.build_vocab(train_data)
-
 BATCH_SIZE = 16
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
